@@ -9,7 +9,7 @@ function Home() {
         <div className="home-hero-content">
 
           <p className="home-eyebrow">
-            AI-POWERED GREEN CHILI MONITORING
+            AI-POWERED GREEN CHILI INTELLIGENT MONITORING
           </p>
 
           <h2>
