@@ -35,6 +35,8 @@ The component follows an end-to-end image classification pipeline connecting the
 ### 🔄 Assessment Flow
 
 **Chili Image Upload → FastAPI Backend → Image Preprocessing → EfficientNetB0 Model → Five-Class Prediction → Confidence Score → Assessment Result**
+<img width="1774" height="887" alt="component1-system-architecture png" src="https://github.com/user-attachments/assets/9558833e-b2bb-4eb2-b03c-603c83f437b8" />
+![Uploading component1-system-architecture.png.png…]()
 
 ---
 
