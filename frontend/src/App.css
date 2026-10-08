@@ -3494,6 +3494,72 @@ footer {
   }
 }
 
+/* ===== Model Performance Details ===== */
+
+.model-details-card {
+  margin-top: 32px;
+  padding: 28px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+}
+
+.model-details-card h3 {
+  margin: 0 0 24px;
+  font-size: 1.25rem;
+}
+
+.model-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.model-detail-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px;
+  background: #f8faf8;
+  border-radius: 12px;
+}
+
+.model-detail-grid span {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.model-detail-grid strong {
+  display: block;
+  font-size: 1.45rem;
+  line-height: 1.2;
+  color: #163d2a;
+}
+
+@media (max-width: 900px) {
+  .model-detail-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .model-detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.metric-card strong {
+  word-break: normal;
+  overflow-wrap: normal;
+}
+
+.metric-card:last-child strong {
+  font-size: 1.45rem;
+  white-space: nowrap;
+}
+
 
 /* ==============================
    RESPONSIVE - SMALL MOBILE
