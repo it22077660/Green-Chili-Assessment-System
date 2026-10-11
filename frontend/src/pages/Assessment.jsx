@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const getRecommendation = (predictedClass) => {
   const recommendations = {
@@ -26,6 +26,8 @@ const getRecommendation = (predictedClass) => {
 
 function Assessment({ onNewAssessment }) {
   const [selectedFile, setSelectedFile] = useState(null);
+  const cameraInputRef = useRef(null);
+  const galleryInputRef = useRef(null);
   const [preview, setPreview] = useState(null);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -178,26 +180,49 @@ if (Number(data.confidence) >= 70) {
           </div>
         </div>
 
-        {!preview ? (
-          <label className="upload-area">
-            <div className="upload-icon">↑</div>
+       {!preview ? (
+  <div className="upload-area">
+    <div className="upload-icon">↑</div>
 
-            <h3>Choose a chili image</h3>
+    <h3>Choose a chili image</h3>
+    <p>JPG, JPEG or PNG</p>
 
-            <p>JPG, JPEG or PNG</p>
+    <div className="camera-upload-actions">
+      <button
+        type="button"
+        className="camera-button"
+        onClick={() => cameraInputRef.current?.click()}
+      >
+        📷 Take Photo
+      </button>
 
-            <span className="choose-button">
-              Browse Image
-            </span>
+      <button
+        type="button"
+        className="gallery-button"
+        onClick={() => galleryInputRef.current?.click()}
+      >
+        🖼️ Choose from Gallery
+      </button>
+    </div>
 
-            <input
-              type="file"
-              accept="image/png,image/jpeg"
-              onChange={handleImageChange}
-              hidden
-            />
-          </label>
-        ) : (
+    <input
+      ref={cameraInputRef}
+      type="file"
+      accept="image/jpeg,image/png"
+      capture="environment"
+      onChange={handleImageChange}
+      hidden
+    />
+
+    <input
+      ref={galleryInputRef}
+      type="file"
+      accept="image/jpeg,image/png"
+      onChange={handleImageChange}
+      hidden
+    />
+  </div>
+) : (
           <div className="preview-container">
             <img
               src={preview}

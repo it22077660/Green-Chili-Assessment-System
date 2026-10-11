@@ -19,6 +19,12 @@ import ModelPerformance from "./pages/ModelPerformance";
 function AppContent() {
   const location = useLocation();
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+useEffect(() => {
+  setMobileMenuOpen(false);
+}, [location.pathname]);
+
   const [history, setHistory] = useState(() => {
     try {
       const savedHistory = localStorage.getItem(
@@ -96,64 +102,64 @@ function AppContent() {
           {/* =====================================
               MAIN NAVIGATION
           ====================================== */}
-          <nav className="navigation">
+         {/* Mobile Navigation Toggle */}
+<button
+  type="button"
+  className="mobile-menu-toggle"
+  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+  aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+  aria-expanded={mobileMenuOpen}
+  aria-controls="main-navigation"
+>
+  {mobileMenuOpen ? "✕" : "☰"}
+</button>
 
-            <NavLink
-              to="/home"
-              className={({ isActive }) =>
-                isActive
-                  ? "nav-link active"
-                  : "nav-link"
-              }
-            >
-              Home
-            </NavLink>
+{/* Main Navigation */}
+<nav
+  id="main-navigation"
+  className={`navigation ${mobileMenuOpen ? "mobile-open" : ""}`}
+>
+  <NavLink
+    to="/home"
+    className={({ isActive }) =>
+      isActive ? "nav-link active" : "nav-link"
+    }
+  >
+    Home
+  </NavLink>
 
+  <NavLink
+    to="/assessment"
+    className={({ isActive }) =>
+      isActive ? "nav-link active" : "nav-link"
+    }
+  >
+    Assessment
+  </NavLink>
 
-            <NavLink
-              to="/assessment"
-              className={({ isActive }) =>
-                isActive
-                  ? "nav-link active"
-                  : "nav-link"
-              }
-            >
-              Assessment
-            </NavLink>
+  <NavLink
+    to="/history"
+    className={({ isActive }) =>
+      isActive ? "nav-link active" : "nav-link"
+    }
+  >
+    History
+    {history.length > 0 && (
+      <span className="history-count">{history.length}</span>
+    )}
+  </NavLink>
 
-
-            <NavLink
-              to="/history"
-              className={({ isActive }) =>
-                isActive
-                  ? "nav-link active"
-                  : "nav-link"
-              }
-            >
-              History
-
-              {history.length > 0 && (
-                <span className="history-count">
-                  {history.length}
-                </span>
-              )}
-            </NavLink>
-
-
-            <NavLink
-              to="/performance"
-              className={({ isActive }) =>
-                isActive
-                  ? "nav-link active"
-                  : "nav-link"
-              }
-            >
-              Model Performance
-            </NavLink>
-
-          </nav>
-        </>
-      )}
+  <NavLink
+    to="/performance"
+    className={({ isActive }) =>
+      isActive ? "nav-link active" : "nav-link"
+    }
+  >
+    Model Performance
+  </NavLink>
+        </nav>
+      </>
+    )}
 
 
       {/* =====================================

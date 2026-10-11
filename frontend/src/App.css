@@ -3560,6 +3560,327 @@ footer {
   white-space: nowrap;
 }
 
+/* Desktop: hide mobile menu button */
+@media (min-width: 769px) {
+  .mobile-menu-toggle {
+    display: none !important;
+  }
+
+  .navigation {
+    display: flex;
+  }
+}
+
+/* Mobile: show menu button */
+@media (max-width: 768px) {
+  .mobile-menu-toggle {
+    display: flex;
+  }
+
+  .navigation {
+    display: none;
+  }
+
+  .navigation.mobile-open {
+    display: flex;
+  }
+}
+
+/* ==========================================
+   FINAL MOBILE RESPONSIVE IMPROVEMENTS
+========================================== */
+
+@media (max-width: 768px) {
+
+  /* General page layout */
+  .page-container,
+  .dashboard {
+    width: calc(100% - 24px);
+    margin: 20px auto;
+  }
+
+  .dashboard {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .dashboard > *,
+  .card,
+  .result-content {
+    min-width: 0;
+  }
+
+  .card {
+    padding: 18px;
+    border-radius: 16px;
+  }
+
+  /* Header */
+  .header {
+    padding: 25px 18px;
+    gap: 16px;
+  }
+
+  .header h1 {
+    font-size: clamp(24px, 6vw, 32px);
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    overflow-wrap: anywhere;
+  }
+
+  .subtitle {
+    font-size: 13px;
+  }
+
+  /* Mobile navigation */
+  .mobile-menu-toggle {
+    display: flex;
+    margin: 14px 16px;
+    background: #ffffff;
+    color: #176333;
+  }
+
+  .navigation {
+    display: none;
+    width: calc(100% - 32px);
+    margin: 0 16px 16px;
+    padding: 10px;
+    flex-direction: column;
+    align-items: stretch;
+    overflow: visible;
+  }
+
+  .navigation.mobile-open {
+    display: flex;
+  }
+
+  .navigation .nav-link {
+    width: 100%;
+    justify-content: space-between;
+    padding: 13px 15px;
+  }
+
+  /* Assessment cards */
+  .upload-area {
+    min-height: 240px;
+    padding: 20px 14px;
+  }
+
+  .preview-image {
+    width: 100%;
+    height: 240px;
+    object-fit: contain;
+  }
+
+  .empty-result {
+    min-height: 260px;
+    padding: 20px;
+  }
+
+  .prediction-main {
+    padding: 20px;
+  }
+
+  .prediction-main h2 {
+    font-size: 27px;
+    overflow-wrap: anywhere;
+  }
+
+  .assessment-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .recommendation-card {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  /* Buttons */
+  .button-row {
+    flex-direction: column;
+  }
+
+  .analyze-button,
+  .reset-button {
+    width: 100%;
+    min-height: 46px;
+  }
+
+  /* Model Performance */
+  .performance-section,
+  .history-section {
+    padding: 18px;
+    border-radius: 16px;
+  }
+
+  .performance-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .metric-card {
+    min-width: 0;
+    padding: 15px;
+  }
+
+  .metric-card strong {
+    font-size: 23px;
+    overflow-wrap: anywhere;
+  }
+
+  .metric-card:last-child strong {
+    font-size: 17px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .model-detail-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .classification-report {
+    padding: 16px;
+  }
+
+  .report-table-wrapper,
+  .history-table-wrapper {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* History */
+  .history-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .history-actions {
+    flex-wrap: wrap;
+  }
+
+  /* Home page */
+  .home-page {
+    width: calc(100% - 24px);
+    margin: 12px auto 30px;
+  }
+
+  .home-hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    padding: 35px 20px;
+  }
+
+  .home-hero h2 {
+    font-size: clamp(30px, 7vw, 40px);
+  }
+
+  .home-system-section,
+  .integration-section {
+    padding: 30px 18px;
+  }
+
+  .component-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .integration-flow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .flow-arrow {
+    text-align: center;
+    transform: rotate(90deg);
+  }
+
+  .home-cta {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    margin: 0;
+    padding: 25px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .performance-grid,
+  .model-detail-grid,
+  .component-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .section-heading h2 {
+    font-size: 19px;
+  }
+
+  .home-buttons {
+    flex-direction: column;
+  }
+
+  .home-primary-button,
+  .home-secondary-button {
+    width: 100%;
+  }
+
+  .modal-overlay {
+    padding: 10px;
+  }
+
+  .assessment-modal {
+    padding: 16px;
+  }
+}
+
+
+/* Camera and Gallery Upload */
+
+.camera-upload-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 100%;
+}
+
+.camera-button,
+.gallery-button {
+  padding: 13px 18px;
+  border-radius: 11px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.camera-button {
+  background: #236f3c;
+  color: white;
+  border: 1px solid #236f3c;
+}
+
+.gallery-button {
+  background: white;
+  color: #236f3c;
+  border: 1px solid #a9cdb3;
+}
+
+.camera-button:hover,
+.gallery-button:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 480px) {
+  .camera-upload-actions {
+    flex-direction: column;
+  }
+
+  .camera-button,
+  .gallery-button {
+    width: 100%;
+    min-height: 46px;
+  }
+}
 
 /* ==============================
    RESPONSIVE - SMALL MOBILE
