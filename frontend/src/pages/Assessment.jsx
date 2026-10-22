@@ -33,6 +33,14 @@ function Assessment({ onNewAssessment }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [harvestTarget, setHarvestTarget] = useState("green");
+  const [harvestChecks, setHarvestChecks] = useState({ size: false, firmness: false, color: false, quality: false });
+  const [checklistReviewed, setChecklistReviewed] = useState(false);
+  const checkCount = Object.values(harvestChecks).filter(Boolean).length;
+  const isTargetColor = result && ((result.predicted_class === "Green Chili" && result.harvest_target === "green") || (result.predicted_class === "Red Chili" && result.harvest_target === "red"));
+  const toggleCheck = (key) => {
+    setHarvestChecks((previous) => ({ ...previous, [key]: !previous[key] }));
+    setChecklistReviewed(false);
+  };
 
   useEffect(() => {
   return () => {
@@ -96,6 +104,8 @@ const handleImageChange = (event) => {
   setSelectedFile(file);
   setPreview(URL.createObjectURL(file));
   setResult(null);
+  setHarvestChecks({ size: false, firmness: false, color: false, quality: false });
+  setChecklistReviewed(false);
   setError("");
 };
 
@@ -165,6 +175,8 @@ if (Number(data.confidence) >= 70) {
     setSelectedFile(null);
     setPreview(null);
     setResult(null);
+    setHarvestChecks({ size: false, firmness: false, color: false, quality: false });
+    setChecklistReviewed(false);
     setError("");
   };
 
@@ -252,6 +264,8 @@ if (Number(data.confidence) >= 70) {
             onChange={(event) => {
               setHarvestTarget(event.target.value);
               setResult(null);
+              setHarvestChecks({ size: false, firmness: false, color: false, quality: false });
+              setChecklistReviewed(false);
             }}
             disabled={loading}
             style={{ width: "100%", maxWidth: 360, padding: 12, borderRadius: 8, border: "1px solid #b7c8bd", background: "white", color: "#183c2a" }}
@@ -426,6 +440,150 @@ if (Number(data.confidence) >= 70) {
                 </p>
               </div>
             </div>
+
+           
+{/* FARMER-REPORTED PHYSICAL HARVEST CHECKLIST */}
+{isTargetColor && (
+  <div
+    className="harvest-checklist-container"
+    style={{
+      marginTop: "20px",
+      padding: "24px",
+      background: "#f1faf4",
+      border: "1px solid #b8dfc2",
+      borderLeft: "6px solid #238747",
+      borderRadius: "18px",
+      width: "100%",
+      minWidth: 0,
+      boxSizing: "border-box",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "stretch",
+      gap: "14px",
+    }}
+  >
+    <h3 style={{ margin: 0, color: "#174d30" }}>
+      🌶️ Harvest Readiness Checklist
+    </h3>
+
+    <p style={{ margin: 0, lineHeight: 1.7 }}>
+      Inspect the actual fruit and tick only the conditions
+      you have personally confirmed. The AI cannot verify
+      size or firmness from this image.
+    </p>
+
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "14px",
+        width: "100%",
+      }}
+    >
+      {[
+        ["size", "Fruit meets the expected harvest size"],
+        ["firmness", "Fruit feels appropriately firm"],
+        ["color", "Fruit matches the selected harvest color"],
+        ["quality", "No obvious damage or deterioration"],
+      ].map(([key, label]) => (
+        <label
+          key={key}
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "flex-start",
+            gap: "12px",
+            width: "100%",
+            minWidth: 0,
+            cursor: "pointer",
+            fontWeight: 400,
+            letterSpacing: "normal",
+            lineHeight: 1.5,
+          }}
+        >
+          <input
+            type="checkbox"
+            checked={harvestChecks[key]}
+            onChange={() => toggleCheck(key)}
+            style={{
+              width: "18px",
+              height: "18px",
+              flexShrink: 0,
+              marginTop: "3px",
+              accentColor: "#238747",
+            }}
+          />
+
+          <span
+            style={{
+              flex: 1,
+              minWidth: 0,
+              whiteSpace: "normal",
+              overflowWrap: "break-word",
+              fontWeight: 400,
+              letterSpacing: "normal",
+            }}
+          >
+            {label}
+          </span>
+        </label>
+      ))}
+    </div>
+
+    <p style={{ margin: 0 }}>
+      <strong>Confirmed checks:</strong> {checkCount}/4
+    </p>
+
+    <button
+      type="button"
+      className="analyze-button"
+      style={{
+        width: "fit-content",
+        maxWidth: "100%",
+        padding: "12px 22px",
+        alignSelf: "flex-start",
+      }}
+      onClick={() => setChecklistReviewed(true)}
+    >
+      Review Checklist
+    </button>
+
+    {checklistReviewed && (
+      <div
+        style={{
+          background: "#ffffff",
+          padding: "16px",
+          borderRadius: "12px",
+          border: "1px solid #c9e4d0",
+        }}
+      >
+        <strong>
+          {checkCount === 4
+            ? "Preliminary checks passed"
+            : "Further inspection required"}
+        </strong>
+
+        <p style={{ marginTop: "10px", lineHeight: 1.6 }}>
+          {checkCount === 4
+            ? "The selected physical checks have been confirmed by the user. Harvest suitability remains provisional; follow local crop and market guidance."
+            : "Some physical checks have not been confirmed. Do not treat the fruit as harvest-ready based on its image classification alone."}
+        </p>
+      </div>
+    )}
+
+    <p
+      style={{
+        fontSize: "12px",
+        opacity: 0.75,
+        margin: 0,
+        lineHeight: 1.6,
+      }}
+    >
+      This is a user-reported checklist, not a validated
+      AI harvest-readiness prediction.
+    </p>
+  </div>
+)}
 
             {/* CLASS PROBABILITIES */}
 
