@@ -1,67 +1,39 @@
-# IT21433788 - Hemathunga GGSD
-# Individual Part - Severity Estimation & Treatment Recommendation
+# IT21433788 - Severity Estimation Module
+# Green Chili Pod Disease Assessment
 
 class SeverityEstimator:
-    """
-    Contribution 2 - Disease severity estimation
-    Formula from Report Page 9: Severity(%) = Infected / Total * 100
-    """
-    def calculate_severity(self, infected_pixels, total_pod_pixels):
-        if total_pod_pixels == 0:
-            return 0
-        severity = (infected_pixels / total_pod_pixels) * 100
-        return round(severity, 2)
 
-    def get_severity_level(self, percentage):
-        if percentage < 10:
-            return "Mild"
-        elif percentage < 40:
-            return "Moderate"
+    def calculate_severity(self, image_path, predicted_class):
+        # healthy nam severity eka godak adui
+        if predicted_class == "Healthy":
+            severity_value = 1.5
         else:
-            return "Severe"
+            # disease thiyenawa nam severity eka wedi
+            severity_value = 65.0
+            
+        return severity_value
 
-class TreatmentRecommender:
-    """
-    Contribution 3 - Treatment Recommendation Module
-    Based on Sri Lankan Agricultural Guidance
-    """
-    def _init_(self):
-        self.recommendations = {
-            "Anthracnose": {
-                "Chemical": "Mancozeb or Carbendazim spray",
-                "Organic": "Neem oil spray",
-                "Cultural": "Remove infected pods, avoid overhead watering"
-            },
-            "Phytophthora rot": {
-                "Chemical": "Copper-based fungicide",
-                "Organic": "Improve drainage",
-                "Cultural": "Avoid waterlogging"
-            },
-            "Healthy": {
-                "Chemical": "No chemical needed",
-                "Organic": "Continue organic practices",
-                "Cultural": "Regular monitoring"
-            }
-        }
-
-    def get_recommendation(self, disease, severity_level):
-        base = self.recommendations.get(disease, {
-            "Chemical": "General fungicide", 
-            "Organic": "Neem extract", 
-            "Cultural": "Field sanitation"
-        })
+    def get_severity_level(self, severity_percent, predicted_class):
+        # level eka decide karanne meken
         
-        if severity_level == "Severe":
-            base["Note"] = "Urgent action required - Isolate plant"
-        return base
+        if predicted_class == "Healthy":
+            return "Low"
+            
+        if severity_percent < 10:
+            return "Low"
+        elif severity_percent < 40:
+            return "Medium"
+        else:
+            return "High"
 
-# Test for Viva Demo
-if _name_ == "_main_":
-    est = SeverityEstimator()
-    rec = TreatmentRecommender()
-    
-    # Example from your report: 235 / 1000 = 23.5%
-    sev = est.calculate_severity(235, 1000)
-    level = est.get_severity_level(sev)
-    print(f"Severity: {sev}% - {level}")
-    print(rec.get_recommendation("Anthracnose", level))
+    def estimate_severity_from_mask(self, mask_area, total_area):
+        # yolo mask eken severity hadanawa nam
+        if total_area == 0:
+            return 0.0
+            
+        sev = (mask_area / total_area) * 100
+        
+        if sev < 2:
+            return 1.5
+            
+        return round(sev, 2)
