@@ -32,6 +32,7 @@ function Assessment({ onNewAssessment }) {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [harvestTarget, setHarvestTarget] = useState("green");
 
   useEffect(() => {
   return () => {
@@ -110,10 +111,11 @@ const handleImageChange = (event) => {
 
     const formData = new FormData();
     formData.append("file", selectedFile);
+    formData.append("harvest_target", harvestTarget);
 
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/predict",
+         `http://${window.location.hostname}:8000/predict`,
         {
           method: "POST",
           body: formData,
@@ -139,6 +141,9 @@ if (Number(data.confidence) >= 70) {
     predictedClass: data.predicted_class,
     confidence: data.confidence,
     assessment: data.assessment,
+    harvestTarget: data.harvest_target,
+    harvestReadiness: data.harvest_assessment?.readiness,
+    harvestRecommendation: data.harvest_assessment?.recommendation,
     time: new Date().toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",
@@ -237,6 +242,28 @@ if (Number(data.confidence) >= 70) {
           </div>
         )}
 
+        <div className="harvest-target-selector" style={{ marginTop: 20, marginBottom: 16 }}>
+          <label htmlFor="harvest-target" style={{ display: "block", fontWeight: 600, marginBottom: 8 }}>
+            Harvest Target
+          </label>
+          <select
+            id="harvest-target"
+            value={harvestTarget}
+            onChange={(event) => {
+              setHarvestTarget(event.target.value);
+              setResult(null);
+            }}
+            disabled={loading}
+            style={{ width: "100%", maxWidth: 360, padding: 12, borderRadius: 8, border: "1px solid #b7c8bd", background: "white", color: "#183c2a" }}
+          >
+            <option value="green">Green chili harvest</option>
+            <option value="red">Red chili harvest</option>
+          </select>
+          <p style={{ fontSize: 13, opacity: 0.75, marginTop: 8 }}>
+            Select the intended harvest color before analyzing the image.
+          </p>
+        </div>
+
         <div className="button-row">
           <button
             className="analyze-button"
@@ -310,9 +337,9 @@ if (Number(data.confidence) >= 70) {
     <h2>Unable to Identify Chili Image</h2>
 
     <p className="invalid-description">
-      The model could not confidently identify a chili flower
-      or fruit in this image. Please upload a clear image
-      containing a chili flower or chili fruit.
+      The model confidence is below the current 70% review threshold.
+      This does not necessarily mean the image is invalid. Please inspect
+      the image and try another clear photo if needed.
     </p>
 
     <div className="invalid-confidence">
@@ -382,23 +409,23 @@ if (Number(data.confidence) >= 70) {
             */}
 
             <div className="recommendation-card">
-
-              <div className="recommendation-icon">
-                🌿
-              </div>
-
+              <div className="recommendation-icon">🌿</div>
               <div>
-                <span>RECOMMENDATION</span>
-
+                <span>HARVEST READINESS</span>
+                <h3 style={{ margin: "8px 0" }}>
+                  {result.harvest_assessment?.readiness || "Needs Inspection"}
+                </h3>
+                <p><strong>Target:</strong> {result.harvest_target === "red" ? "Red chili" : "Green chili"}</p>
                 <p>
-                  {getRecommendation(
-                    result.predicted_class
-                  )}
+                  {result.harvest_assessment?.recommendation ||
+                    getRecommendation(result.predicted_class)}
+                </p>
+                <p style={{ fontSize: 12, opacity: 0.75, marginTop: 10 }}>
+                  Preliminary image-based guidance only. Confirm harvesting suitability
+                  through physical inspection and crop-specific advice.
                 </p>
               </div>
-
             </div>
-
 
             {/* CLASS PROBABILITIES */}
 
