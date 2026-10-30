@@ -1,5 +1,5 @@
 🌶️ AI-Driven Green Chili Crop Assessment and Decision Support System
-Research Group: 25-26J-209
+Research Group: J26-IT-466
 Programme: B.Sc. (Hons) in Information Technology, Sri Lanka Institute of Information Technology (SLIIT)
 Research Stage: PP1 prototype and ongoing development
 Project status: This repository contains work in progress. Component descriptions below define the group research scope; implementation and validation status vary by component. Confirm each member's latest results before reporting them as completed.
